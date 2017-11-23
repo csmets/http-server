@@ -5,6 +5,7 @@
 #include <sys/types.h>
 #include <netinet/in.h>
 #include <unistd.h>
+#include "utils.h"
 
 int main() {
     FILE *html_data;
@@ -14,10 +15,15 @@ int main() {
     fgets(response_data, 1024, html_data);
 
     // Response header
-    char http_header[2048] = "HTTP/1.1 200 OK\r\n\n";
+    char http_header[2048] = "HTTP/1.1 200 OK\r\nContent-Length:";
+
+    int content_length = strlen(response_data);
+
+    strcat(http_header, intToStr(content_length));
+    strcat(http_header, "\r\n\n");
     strcat(http_header, response_data);
 
-    // Creat a socker
+    // Create a socket
     int server_socket;
     server_socket = socket(AF_INET, SOCK_STREAM, 0);
 
