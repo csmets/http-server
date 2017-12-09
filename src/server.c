@@ -6,22 +6,30 @@
 #include <netinet/in.h>
 #include <unistd.h>
 #include "utils.h"
+#include "header.h"
+
+#define FILE_SIZE 900000
+#define RESP_SIZE 910000
 
 int main() {
     FILE *html_data;
     html_data = fopen("index.html", "r");
 
-    char response_data[1024];
-    fgets(response_data, 1024, html_data);
+    char response_data[FILE_SIZE];
+    fgets(response_data, FILE_SIZE, html_data);
 
     // Response header
-    char http_header[2048] = "HTTP/1.1 200 OK\r\nContent-Length:";
+    char *http_header = header();
 
+    strcat(http_header, "Content-Length:");
     int content_length = strlen(response_data);
-
     strcat(http_header, intToStr(content_length));
     strcat(http_header, "\r\n\n");
+
     strcat(http_header, response_data);
+
+    char http_response[RESP_SIZE];
+    strcpy(http_response, http_header);
 
     // Create a socket
     int server_socket;
@@ -41,7 +49,7 @@ int main() {
 
     while(1) {
         client_socket = accept(server_socket, NULL, NULL);
-        send(client_socket, http_header, sizeof(http_header), 0);
+        send(client_socket, http_response, sizeof(http_response), 0);
         close(client_socket);
     }
 
