@@ -40,11 +40,12 @@ int main() {
 
     listen(server_socket, 5);
 
-    int client_socket;
-    char socket_response[1024];
-    char *separated_resp;
-
     while(1) {
+
+        char socket_response[1024];
+        char *separated_resp;
+        int client_socket;
+
         client_socket = accept(server_socket, (struct sockaddr*) NULL, NULL);
 
         // Read the returned response from the socket
@@ -84,41 +85,54 @@ int main() {
         ///////////////////////////////////////////////////////////////////////
 
         // Load file from given path
-        //
-        // TODO
-        // Check if path given exists and if not return a 404 to prevent server
-        // from crashing.
 
         FILE *html_data;
-        html_data = fopen(open_path, "r");
+        char *response_data = "\0";
+        int file_exists = fexists(open_path);
 
-        char response_data[FILE_SIZE];
-        char line[1000];
-        while(fgets(line, FILE_SIZE, html_data)) {
-            strcat(response_data, line);
-        };
+        if (file_exists == 1) {
+            response_data = malloc(sizeof(char) * RESP_SIZE);
+
+            html_data = fopen(open_path, "r");
+
+            char line[1000];
+            while(fgets(line, FILE_SIZE, html_data)) {
+                strcat(response_data, line);
+            };
+        }
 
         ///////////////////////////////////////////////////////////////////////
 
         // Response header
 
-        char *http_header = header();
+        int status_code = 200; // default: OK
 
-        strcat(http_header, "Content-Length:");
+        if (file_exists == 0) {
+            // File is not found
+            status_code = 400;
+        }
+
+        char *http_response = "\0";
+        http_response = malloc(sizeof(char) * RESP_SIZE);
+
+        strcpy(http_response, header(status_code));
+        strcat(http_response, "Content-Length:");
         int content_length = strlen(response_data);
-        strcat(http_header, intToStr(content_length));
-        strcat(http_header, "\r\n\n");
-
-        strcat(http_header, response_data);
-
-        char http_response[RESP_SIZE];
-        strcpy(http_response, http_header);
+        strcat(http_response, intToStr(content_length));
+        strcat(http_response, "\r\n\n\0");
+        strcat(http_response, response_data);
 
         ///////////////////////////////////////////////////////////////////////
 
         // Send reponse to client
 
-        send(client_socket, http_response, sizeof(http_response), 0);
+        char http_response_array[RESP_SIZE];
+        strcpy(http_response_array, http_response);
+
+        send(client_socket, http_response_array, sizeof(http_response_array), 0);
+
+        // Empty the response array to prevent overlapping responses.
+        memset(&http_response_array[0], 0, sizeof(http_response_array));
 
         ///////////////////////////////////////////////////////////////////////
 
