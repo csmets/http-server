@@ -97,7 +97,12 @@ int main() {
         char http_response_array[RESP_SIZE];
         strcpy(http_response_array, http_response);
 
-        send(client_socket, http_response_array, sizeof(http_response_array), 0);
+        send(
+            client_socket,
+            http_response_array,
+            sizeof(http_response_array),
+            0
+        );
 
         // Empty the response array to prevent overlapping responses.
         memset(&http_response_array[0], 0, sizeof(http_response_array));
@@ -106,8 +111,7 @@ int main() {
 
         // Log the client request
 
-        printf(
-            "Requested: %s IP: %s Port: %d\r\n",
+        log_access(
             open_path,
             inet_ntop(AF_INET, &client_addr.sin_addr, buff, sizeof(buff)),
             ntohs(client_addr.sin_port)

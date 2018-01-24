@@ -39,7 +39,7 @@ char *get_response_path(char *socket_response) {
     open_path = malloc(sizeof(char) * (strlen(WEB_ROOT) + strlen(path)));
     strcpy(open_path, WEB_ROOT);
 
-    char* absolute_path = "/";
+    char *absolute_path = "/";
     if (strcmp(path, absolute_path) == 0) {
         path = "/index.html";
         strcat(open_path, path);
@@ -66,4 +66,16 @@ char *load_file_contents(char *file_path) {
     }
 
     return response_data;
+}
+
+void log_access(char *path, const char *ip, int port) {
+    FILE *logf = fopen("http_access.log", "a");
+    if (logf == NULL) {
+        printf("Error opening file!\n");
+        exit(1);
+    }
+
+    fprintf(logf, "Requested: %s IP: %s Port: %d\r\n", path, ip, port);
+
+    fclose(logf);
 }
