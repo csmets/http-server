@@ -1,0 +1,14 @@
+[Unit]
+Description=HTTP Service
+
+[Service]
+User=root
+ExecStart=/opt/http-server/server.bin
+TimeoutSec=30
+Restart=on-failure
+RestartSec=30
+StartLimitInterval=350
+StartLimitBurst=10
+
+[Install]
+WantedBy=multi-user.target
