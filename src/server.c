@@ -104,8 +104,15 @@ int main() {
             0
         );
 
-        // Empty the response array to prevent overlapping responses.
+        ///////////////////////////////////////////////////////////////////////
+
+        // Memory clean up
+
         memset(&http_response_array[0], 0, sizeof(http_response_array));
+        memset(&socket_response[0], 0, sizeof(socket_response));
+
+        response_data = NULL;
+        open_path = NULL;
 
         ///////////////////////////////////////////////////////////////////////
 

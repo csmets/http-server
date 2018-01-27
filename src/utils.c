@@ -8,7 +8,8 @@
 
 char *intToStr(int number) {
     int length = snprintf(NULL, 0, "%d", number);
-    char *str = malloc(length + 1);
+    char *str = NULL;
+    str = malloc(length + 1);
     snprintf(str, length + 1, "%d", number);
     return str;
 }
@@ -31,8 +32,8 @@ int isDirectory(const char *path) {
 
 char *get_response_path(char *socket_response) {
     short int count = 0;
-    char *path;
-    char *separated_resp;
+    char *path = NULL;
+    char *separated_resp = NULL;
 
     separated_resp = strtok(socket_response, " ");
 
@@ -46,19 +47,24 @@ char *get_response_path(char *socket_response) {
     }
 
     char *open_path = NULL;
-    open_path = malloc(sizeof(char) * (strlen(WEB_ROOT) + strlen(path + 20)));
+    open_path = malloc(
+                    sizeof(char) *
+                        (
+                            strlen(WEB_ROOT) +
+                            strlen(path) +
+                            strlen(DEFAULT_FILE) + 1
+                        )
+                    );
 
     strcpy(open_path, WEB_ROOT);
 
     char *absolute_path = "/";
-    char *index = "/index.html";
     if (strcmp(path, absolute_path) == 0) {
-        path = "/index.html";
-        strcat(open_path, path);
+        strcat(open_path, DEFAULT_FILE); // load root file
     } else {
         strcat(open_path, path);
         if (isDirectory(open_path) != 0) {
-            strcat(open_path, index);
+            strcat(open_path, DEFAULT_FILE);
         }
     }
 
@@ -67,12 +73,12 @@ char *get_response_path(char *socket_response) {
 
 char *load_file_contents(char *file_path) {
     FILE *html_data;
-    char *response_data = "\0";
+    char *response_data = NULL;
+    response_data = malloc(sizeof(char) * RESP_SIZE);
 
     if (fexists(file_path) == 1) {
-        response_data = malloc(sizeof(char) * RESP_SIZE);
 
-        html_data = fopen(file_path, "r");
+        html_data = fopen(file_path, "rb");
 
         char line[MAX_READ_LINES];
         while(fgets(line, sizeof(html_data), html_data)) {

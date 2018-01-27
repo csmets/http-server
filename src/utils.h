@@ -2,8 +2,9 @@
 #define UTILS_H
 
 #define WEB_ROOT "www/html"
-#define RESP_SIZE 910000
+#define RESP_SIZE 150000
 #define MAX_READ_LINES 10000
+#define DEFAULT_FILE "/index.html"
 
 char *intToStr(int number);
 int fexists(char file_name[]);
