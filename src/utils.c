@@ -2,6 +2,9 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
 
 char *intToStr(int number) {
     int length = snprintf(NULL, 0, "%d", number);
@@ -17,6 +20,13 @@ int fexists(char file_name[]) {
        return 1;
     }
     return 0;
+}
+
+int isDirectory(const char *path) {
+   struct stat statbuf;
+   if (stat(path, &statbuf) != 0)
+       return 0;
+   return S_ISDIR(statbuf.st_mode);
 }
 
 char *get_response_path(char *socket_response) {
@@ -36,15 +46,20 @@ char *get_response_path(char *socket_response) {
     }
 
     char *open_path = NULL;
-    open_path = malloc(sizeof(char) * (strlen(WEB_ROOT) + strlen(path)));
+    open_path = malloc(sizeof(char) * (strlen(WEB_ROOT) + strlen(path + 20)));
+
     strcpy(open_path, WEB_ROOT);
 
     char *absolute_path = "/";
+    char *index = "/index.html";
     if (strcmp(path, absolute_path) == 0) {
         path = "/index.html";
         strcat(open_path, path);
     } else {
         strcat(open_path, path);
+        if (isDirectory(open_path) != 0) {
+            strcat(open_path, index);
+        }
     }
 
     return open_path;
