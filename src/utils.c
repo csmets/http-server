@@ -32,7 +32,7 @@ int isDirectory(const char *path) {
 
 char *get_response_path(char *socket_response) {
     short int count = 0;
-    char *path = NULL;
+    char *path = "\0";
     char *separated_resp = NULL;
 
     separated_resp = strtok(socket_response, " ");
