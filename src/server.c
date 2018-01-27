@@ -9,7 +9,7 @@
 #include "utils.h"
 #include "header.h"
 
-#define PORT 8090
+#define PORT 80
 
 int main() {
 
@@ -21,6 +21,8 @@ int main() {
     server_socket = socket(AF_INET, SOCK_STREAM, 0);
 
     socklen_t slen;
+    char socket_response[1024];
+    int client_socket;
 
     ///////////////////////////////////////////////////////////////////////////
 
@@ -43,9 +45,6 @@ int main() {
 
     while(1) {
         slen = sizeof(client_addr);
-
-        char socket_response[1024];
-        int client_socket;
 
         client_socket = accept(
                             server_socket,
@@ -77,7 +76,7 @@ int main() {
 
         if (fexists(open_path) == 0) {
             // File is not found
-            status_code = 400;
+            status_code = 404;
         }
 
         char *http_response = "\0";
