@@ -89,6 +89,26 @@ char *load_file_contents(char *file_path) {
     return response_data;
 }
 
+char *get_file_extension(char *file_path) {
+    char *dot = strrchr(file_path, '.');
+    if(!dot || dot == file_path) return "";
+    return dot + 1;
+}
+
+char *get_mime_type(char *extension) {
+    char *mime;
+    if (strcmp(extension, "json") == 0) {
+        mime = "application/json";
+        return mime;
+    } else if (strcmp(extension, "css") == 0) {
+        mime = "text/css";
+        return mime;
+    } else {
+        mime = "text/plain";
+        return mime;
+    }
+}
+
 void log_access(char *path, const char *ip, int port) {
     FILE *logf = fopen("http_access.log", "a");
     if (logf == NULL) {

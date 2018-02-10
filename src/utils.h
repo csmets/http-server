@@ -11,6 +11,7 @@ int fexists(char file_name[]);
 int isDirectory(const char *path);
 char *get_response_path(char *socket_response);
 char *load_file_contents(char *file_path);
+char *get_file_extension(char *file_path);
 void log_access(char *path, const char *ip, int port);
 
 #endif
