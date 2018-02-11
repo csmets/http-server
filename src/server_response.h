@@ -1,6 +1,9 @@
-#ifndef HEADER_H
-#define HEADER_H
+#ifndef SERVER_RESPONSE_H
+#define SERVER_RESPONSE_H
 
-char *build_response(char* path);
+#include "header.h"
+#include "content.h"
+
+char *create_response(Header h, Content c);
 
 #endif

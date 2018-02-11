@@ -6,10 +6,13 @@
 #include <sys/types.h>
 #include <netinet/in.h>
 #include <unistd.h>
+
 #include "utils.h"
 #include "header.h"
+#include "content.h"
+#include "server_response.h"
 
-#define PORT 80
+#define PORT 8080
 
 int main() {
 
@@ -66,28 +69,18 @@ int main() {
 
         // Load file from given path
 
-        char *response_data = load_file_contents(open_path);
+        Content response_content = load_file_contents(open_path);
 
         ///////////////////////////////////////////////////////////////////////
 
-        // Response header
+        // Create header
+        Header header = create_header(response_content);
 
-        int status_code = 200; // default: OK
+        ///////////////////////////////////////////////////////////////////////
 
-        if (fexists(open_path) == 0) {
-            // File is not found
-            status_code = 404;
-        }
+        // Create http response
 
-        char *http_response = "\0";
-        http_response = malloc(sizeof(char) * RESP_SIZE);
-
-        strcpy(http_response, header(status_code));
-        strcat(http_response, "Content-Length:");
-        int content_length = strlen(response_data);
-        strcat(http_response, intToStr(content_length));
-        strcat(http_response, "\r\n\n\0");
-        strcat(http_response, response_data);
+        char *http_response = create_response(header, response_content);
 
         ///////////////////////////////////////////////////////////////////////
 
@@ -95,6 +88,8 @@ int main() {
 
         char http_response_array[RESP_SIZE];
         strcpy(http_response_array, http_response);
+
+        printf("%s", http_response_array);
 
         send(
             client_socket,
@@ -109,8 +104,6 @@ int main() {
 
         memset(&http_response_array[0], 0, sizeof(http_response_array));
         memset(&socket_response[0], 0, sizeof(socket_response));
-
-        response_data = NULL;
         open_path = NULL;
 
         ///////////////////////////////////////////////////////////////////////
