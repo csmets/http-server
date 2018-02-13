@@ -74,7 +74,7 @@ char *get_response_path(char *socket_response) {
 
 
 void log_access(char *path, const char *ip, int port) {
-    FILE *logf = fopen("http_access.log", "a");
+    FILE *logf = fopen("/var/log/http_access.log", "a");
     if (logf == NULL) {
         printf("Error opening file!\n");
         exit(1);
