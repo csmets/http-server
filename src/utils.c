@@ -1,10 +1,11 @@
-#include "utils.h"
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
+
+#include "utils.h"
 
 char *intToStr(int number) {
     int length = snprintf(NULL, 0, "%d", number);
@@ -71,26 +72,9 @@ char *get_response_path(char *socket_response) {
     return open_path;
 }
 
-char *load_file_contents(char *file_path) {
-    FILE *html_data;
-    char *response_data = NULL;
-    response_data = malloc(sizeof(char) * RESP_SIZE);
-
-    if (fexists(file_path) == 1) {
-
-        html_data = fopen(file_path, "rb");
-
-        char line[MAX_READ_LINES];
-        while(fgets(line, sizeof(html_data), html_data)) {
-            strcat(response_data, line);
-        };
-    }
-
-    return response_data;
-}
 
 void log_access(char *path, const char *ip, int port) {
-    FILE *logf = fopen("http_access.log", "a");
+    FILE *logf = fopen("/var/log/http_access.log", "a");
     if (logf == NULL) {
         printf("Error opening file!\n");
         exit(1);
