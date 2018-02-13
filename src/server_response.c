@@ -39,10 +39,10 @@ char *create_response(Header h, Content c) {
     strcat(content_length, intToStr(h.content_length));
     strcat(content_length, "\r\n\0");
 
-    char *mime_type = "\0";
-    mime_type = malloc(sizeof(char) * HEADER_SIZE);
-    strcpy(mime_type, "Mime-type: \0");
-    strcat(mime_type, h.mime_type);
+    char *content_type = "\0";
+    content_type = malloc(sizeof(char) * HEADER_SIZE);
+    strcpy(content_type, "Content-Type: \0");
+    strcat(content_type, h.content_type);
 
     char *http_resp = "\0";
     http_resp = malloc(sizeof(char) * RESP_SIZE);
@@ -51,7 +51,7 @@ char *create_response(Header h, Content c) {
     strcat(http_resp, pragma);
     strcat(http_resp, expires);
     strcat(http_resp, content_length);
-    strcat(http_resp, mime_type);
+    strcat(http_resp, content_type);
     strcat(http_resp, "\r\n\n\0");
     strcat(http_resp, c.body);
 
@@ -60,7 +60,7 @@ char *create_response(Header h, Content c) {
     free(pragma);
     free(expires);
     free(content_length);
-    free(mime_type);
+    free(content_type);
 
     return http_resp;
 }

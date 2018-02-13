@@ -22,7 +22,7 @@ Content load_file_contents(char *file_path) {
         };
 
         content.status_code = 200;
-        content.mime_type = get_mime_type(get_file_extension(file_path));
+        content.content_type = get_content_type(get_file_extension(file_path));
         content.length = strlen(response_data);
     } else {
         content.status_code = 404;
@@ -40,10 +40,14 @@ char *get_file_extension(char *file_path) {
     return dot + 1;
 }
 
-char *get_mime_type(char *extension) {
+char *get_content_type(char *extension) {
+    printf("%s", extension);
     char *mime;
     if (strcmp(extension, "json") == 0) {
         mime = "application/json";
+        return mime;
+    } else if (strcmp(extension, "html") == 0) {
+        mime = "text/html";
         return mime;
     } else if (strcmp(extension, "css") == 0) {
         mime = "text/css";

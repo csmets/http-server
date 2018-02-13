@@ -13,7 +13,7 @@ Header create_header(Content content) {
     h.cache_control = "no-cache, no-store, must-revalidate\0";
     h.pragma = "no-cache\0";
     h.expires = 0;
-    h.mime_type = content.mime_type;
+    h.content_type = content.content_type;
     h.content_length = content.length;
     return h;
 }

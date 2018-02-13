@@ -76,6 +76,8 @@ int main() {
         // Create header
         Header header = create_header(response_content);
 
+        printf("%d", header.content_length);
+
         ///////////////////////////////////////////////////////////////////////
 
         // Create http response
@@ -88,8 +90,6 @@ int main() {
 
         char http_response_array[RESP_SIZE];
         strcpy(http_response_array, http_response);
-
-        printf("%s", http_response_array);
 
         send(
             client_socket,

@@ -13,7 +13,7 @@ typedef struct Header {
     char *cache_control;
     char *pragma;
     int expires;
-    char *mime_type;
+    char *content_type;
 } Header;
 
 Header create_header(Content content);
