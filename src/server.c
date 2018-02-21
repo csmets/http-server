@@ -7,16 +7,13 @@
 #include <netinet/in.h>
 #include <unistd.h>
 
+#include "server_config.h"
 #include "utils.h"
-#include "header.h"
-#include "content.h"
 #include "server_response.h"
-
-#define PORT 8080
 
 int main() {
 
-    char buff[RESP_SIZE];
+    char buff[MAX_RESP_SIZE];
 
     // Create a socket
 
@@ -82,14 +79,14 @@ int main() {
 
         // Create http response
 
-        char *http_response = create_response(header, response_content);
+        Http_Response http_response = create_response(header, response_content);
 
         ///////////////////////////////////////////////////////////////////////
 
         // Send reponse to client
 
-        char http_response_array[RESP_SIZE];
-        strcpy(http_response_array, http_response);
+        char http_response_array[http_response.size];
+        strcpy(http_response_array, http_response.content);
 
         send(
             client_socket,

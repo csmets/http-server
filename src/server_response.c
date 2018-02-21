@@ -1,9 +1,10 @@
 #include <stdlib.h>
 #include <string.h>
-#include "header.h"
+#include "server_config.h"
 #include "utils.h"
+#include "server_response.h"
 
-char *create_response(Header h, Content c) {
+char *generate_header (Header h) {
     char *status_response = "\0";
     status_response = malloc(sizeof(char) * HEADER_SIZE);
 
@@ -44,16 +45,15 @@ char *create_response(Header h, Content c) {
     strcpy(content_type, "Content-Type: \0");
     strcat(content_type, h.content_type);
 
-    char *http_resp = "\0";
-    http_resp = malloc(sizeof(char) * RESP_SIZE);
-    strcpy(http_resp, status_response);
-    strcat(http_resp, cache_control);
-    strcat(http_resp, pragma);
-    strcat(http_resp, expires);
-    strcat(http_resp, content_length);
-    strcat(http_resp, content_type);
-    strcat(http_resp, "\r\n\n\0");
-    strcat(http_resp, c.body);
+    char *http_header = "\0";
+    http_header = malloc(sizeof(char) * HEADER_SIZE);
+    strcpy(http_header, status_response);
+    strcat(http_header, cache_control);
+    strcat(http_header, pragma);
+    strcat(http_header, expires);
+    strcat(http_header, content_length);
+    strcat(http_header, content_type);
+    strcat(http_header, "\r\n\n\0");
 
     free(status_response);
     free(cache_control);
@@ -62,5 +62,20 @@ char *create_response(Header h, Content c) {
     free(content_length);
     free(content_type);
 
-    return http_resp;
+    return http_header;
+}
+
+Http_Response create_response(Header h, Content c) {
+    char *header = generate_header(h);
+
+    char *http_resp = "\0";
+    http_resp = malloc(sizeof(char) * (strlen(header) + strlen(c.body) + 1));
+    strcpy(http_resp, header);
+    strcat(http_resp, c.body);
+
+    Http_Response resp;
+    resp.content = http_resp;
+    resp.size = strlen(resp.content);
+
+    return resp;
 }

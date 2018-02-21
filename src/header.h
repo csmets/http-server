@@ -3,8 +3,6 @@
 
 #include "content.h"
 
-#define HEADER_SIZE 500
-
 typedef struct Header {
     char *version;
     short int status_code;

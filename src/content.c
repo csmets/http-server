@@ -2,13 +2,14 @@
 #include <string.h>
 #include <stdlib.h>
 
+#include "server_config.h"
 #include "utils.h"
 #include "content.h"
 
 Content load_file_contents(char *file_path) {
     FILE *html_data;
     char *response_data = NULL;
-    response_data = malloc(sizeof(char) * RESP_SIZE);
+    response_data = malloc(sizeof(char) * MAX_RESP_SIZE);
     Content content;
     content.file_path = file_path;
 
