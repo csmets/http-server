@@ -4,6 +4,11 @@
 #include "header.h"
 #include "content.h"
 
-char *create_response(Header h, Content c);
+typedef struct Http_Response {
+    char *content;
+    int size;
+} Http_Response;
+
+Http_Response create_response(Header h, Content c);
 
 #endif

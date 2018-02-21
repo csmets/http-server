@@ -5,6 +5,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
+#include "server_config.h"
 #include "utils.h"
 
 char *intToStr(int number) {

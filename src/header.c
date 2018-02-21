@@ -3,7 +3,6 @@
 #include <string.h>
 
 #include "header.h"
-#include "utils.h"
 
 Header create_header(Content content) {
     Header h;
