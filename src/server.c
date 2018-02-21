@@ -104,7 +104,6 @@ int main() {
 
         memset(&http_response_array[0], 0, sizeof(http_response_array));
         memset(&socket_response[0], 0, sizeof(socket_response));
-        open_path = NULL;
 
         ///////////////////////////////////////////////////////////////////////
 
