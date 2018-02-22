@@ -3,23 +3,15 @@
 
 #include "server_config.h"
 #include "utils.h"
+#include "socket_response.h"
 
-char *get_response_path(char *socket_response) {
-    short int count = 0;
-    char *path = "\0";
+char *split_socket_response (char *socket_response) {
     char *separated_resp = NULL;
-
     separated_resp = strtok(socket_response, " ");
+    return separated_resp;
+}
 
-    while (separated_resp != NULL) {
-        if (count == 1) {
-            path = separated_resp;
-            break;
-        }
-        separated_resp = strtok(NULL, " ");
-        count++;
-    }
-
+char *get_response_path(char *path) {
     char *open_path = NULL;
     open_path = malloc(
                     sizeof(char) *
@@ -43,4 +35,26 @@ char *get_response_path(char *socket_response) {
     }
 
     return open_path;
+}
+
+socket_resp socket_response_object(char *socket_response) {
+    short int count = 0;
+    char *separated_resp = NULL;
+    socket_resp socket_obj;
+    socket_obj.path = "\0";
+    socket_obj.method = "\0";
+    separated_resp = split_socket_response(socket_response);
+
+    while (separated_resp != NULL) {
+        if (count == 0) {
+            socket_obj.method = separated_resp;
+        } else if (count == 1) {
+            socket_obj.path = get_response_path(separated_resp);
+            break;
+        }
+        separated_resp = strtok(NULL, " ");
+        count++;
+    }
+
+    return socket_obj;
 }

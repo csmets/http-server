@@ -10,7 +10,14 @@ void log_access(log l) {
         exit(1);
     }
 
-    fprintf(logf, "Requested: %s IP: %s Port: %d\r\n", l.path, l.ip, l.port);
+    fprintf(
+            logf,
+            "%s %d %s %s %d\r\n",
+            l.method,
+            l.status_code,
+            l.path,
+            l.ip,
+            l.port);
 
     fclose(logf);
 }

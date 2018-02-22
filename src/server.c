@@ -57,12 +57,13 @@ int main() {
         // Read the returned response from the socket
 
         read(client_socket, socket_response, 1024);
+        socket_resp socket_obj = socket_response_object(socket_response);
 
         ///////////////////////////////////////////////////////////////////////
 
         // Get the path from the response returned
 
-        char *open_path = get_response_path(socket_response);
+        char *open_path = socket_obj.path;
 
         ///////////////////////////////////////////////////////////////////////
 
@@ -109,6 +110,7 @@ int main() {
         // Log the client request
 
         log l;
+        l.method = socket_obj.method;
         l.path = open_path;
         l.ip = inet_ntop(AF_INET, &client_addr.sin_addr, buff, sizeof(buff));
         l.port = ntohs(client_addr.sin_port);
