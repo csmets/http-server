@@ -10,6 +10,8 @@
 #include "server_config.h"
 #include "utils.h"
 #include "server_response.h"
+#include "socket_response.h"
+#include "log.h"
 
 int main() {
 
@@ -106,11 +108,11 @@ int main() {
 
         // Log the client request
 
-        log_access(
-            open_path,
-            inet_ntop(AF_INET, &client_addr.sin_addr, buff, sizeof(buff)),
-            ntohs(client_addr.sin_port)
-        );
+        log l;
+        l.path = open_path;
+        l.ip = inet_ntop(AF_INET, &client_addr.sin_addr, buff, sizeof(buff));
+        l.port = ntohs(client_addr.sin_port);
+        log_access(l);
 
         ///////////////////////////////////////////////////////////////////////
 
