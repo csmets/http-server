@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/socket.h>
@@ -75,8 +74,6 @@ int main() {
 
         // Create header
         Header header = create_header(response_content);
-
-        printf("%d", header.content_length);
 
         ///////////////////////////////////////////////////////////////////////
 
