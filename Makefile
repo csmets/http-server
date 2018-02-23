@@ -1,10 +1,12 @@
 CC = gcc
 
 FILES = src/server.c \
-				src/header.c \
-				src/utils.c \
-				src/content.c \
-				src/server_response.c
+		src/header.c \
+		src/utils.c \
+		src/content.c \
+		src/server_response.c \
+		src/log.c \
+		src/socket_response.c
 
 BUILD_DIR = ./build/
 BIN = $(BUILD_DIR)server
