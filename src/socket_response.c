@@ -47,7 +47,7 @@ socket_resp socket_response_object(char *socket_response) {
 
     while (separated_resp != NULL) {
         if (count == 0) {
-            socket_obj.method = separated_resp;
+            socket_obj.method = strdup(separated_resp);
         } else if (count == 1) {
             socket_obj.path = get_response_path(separated_resp);
             break;

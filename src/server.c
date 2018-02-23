@@ -111,6 +111,7 @@ int main() {
 
         log l;
         l.method = socket_obj.method;
+        l.status_code = header.status_code;
         l.path = open_path;
         l.ip = inet_ntop(AF_INET, &client_addr.sin_addr, buff, sizeof(buff));
         l.port = ntohs(client_addr.sin_port);
